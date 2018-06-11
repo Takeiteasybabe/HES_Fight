@@ -1,18 +1,23 @@
 import Object
+from State import State
 
 class Model(Object.Object):
     def __init__(self, imagebox, name, x=0, y=0, isvisible = False):
         Object.Object.__init__(self, imagebox, 24, 32, name)
         self.visible = isvisible
         self.flipped = False
-        self.state = ["stand", 6, 0, 0, 48]
+        self.states = dict()
+        self.states["Standing"] = State("Standing", 2, [6, 6], 0, 0)
+        self.currentState = State("Standing", 2, [6, 6], 0, 0)
+        self.currentStatePosition = 0
         
     def update(self):
-        if self.state[0] == "stand":
-            if self.state[1] > 0:
-                self.state[1] -= 1
-            else:
-                self.state[2] = (self.state[2] + self.width) % self.state[4]
-                self.state[1] = 6
-        self.blitx = self.state[2]
-        self.blity = self.state[3]
+        if self.currentState.ticks[self.currentStatePosition] > 0:
+            self.currentState.ticks[self.currentStatePosition] -= 1
+        else:
+            self.currentState.cropCoordinateX = (self.currentState.cropCoordinateX + self.width) % (self.width * self.currentState.positionCount)
+            self.currentState.ticks[self.currentStatePosition] = self.states[self.currentState.name].ticks[self.currentStatePosition]
+            self.currentStatePosition = (self.currentStatePosition + 1) % self.states[self.currentState.name].positionCount            
+        
+        self.blitx = self.currentState.cropCoordinateX
+        self.blity = self.currentState.cropCoordinateY
