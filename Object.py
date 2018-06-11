@@ -8,7 +8,7 @@ class Object:
         self.name = name
         self.x = x
         self.y = y
-        self.blitx = 24
+        self.blitx = 0
         self.blity = 0
 
     def SetImage(self, image):

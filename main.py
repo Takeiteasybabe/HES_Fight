@@ -20,9 +20,9 @@ while 1:
     screen.blit(core.location.picture, core.location.picture.get_rect())
     for i in core.items:
         if i.visible:
-            placeRect = (i.x + 100, i.y + 100, i.width, i.height )
+            placeRect = (i.x, i.y, i.width, i.height)
             cropRect = (i.blitx, i.blity, i.width, i.height)
-            screen.blit(i.image, placeRect, cropRect)
+            screen.blit(pygame.transform.flip(i.image, i.flipped, False), placeRect, cropRect)
 
-    pygame.time.wait(100)
+    pygame.time.wait(70)
     pygame.display.flip()
