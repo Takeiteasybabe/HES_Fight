@@ -6,13 +6,15 @@ class Core:
         self.location = Location
         self.items = {"pl1" : model1}
         self.items["pl1"].x = 100
-        self.items["pl1"].y = 500
+        self.items["pl1"].y = 100
         self.items["pl1"].flipped = False
         for key in self.items.keys():
             self.items[key].visible = True
         
         self.keyBindingsDown = {275 : model1.startRunning,
-                                276 : model1.startRunningFlip}
+                                276 : model1.startRunningFlip,
+                                44 : model1.lightHit,
+                                46 : model1.lightKick}
         
         self.keyBindingsUp = {275 : model1.stopRunning,
                               276 : model1.stopRunningFlip}
