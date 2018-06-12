@@ -11,24 +11,34 @@ class Model(Object.Object):
         self.states = dict()
         self.states["Standing"] = State(["Standing", 2, [5, 5], 0, 0])
         self.states["Running"] = State(["Running", 2, [1, 1], 0, self.height])
-        self.states["LightHit"] = State(["LightHit", 3, [2, 2], 0, self.height * 2])
+        self.states["LightHit"] = State(["LightHit", 3, [1, 2, 1], 0, self.height * 2])
+        self.states["LightKick"] = State(["LightKick", 3, [2, 2, 1], 0, self.height * 3])
         self.currentState = State(self.states["Standing"].returnCopy())
+        self.cyclingStates = set(["Standing", "Running"])
         self.currentStatePosition = 0
         self.speed = 0
         
     def update(self):
+        #print(self.currentState.name, self.currentStatePosition)
         if self.currentState.ticks[self.currentStatePosition] > 0:
             self.currentState.ticks[self.currentStatePosition] -= 1
         else:
-            self.x += self.speed
-            if self.flipped:
-                self.currentState.cropCoordinateX = self.rightBorder - ((self.currentStatePosition * self.width + self.width) % (self.width * self.currentState.positionCount + 1))
+            self.currentStatePosition += 1
+            if self.currentState.name in self.cyclingStates or self.currentStatePosition <= self.currentState.positionCount - 1:
+                self.currentStatePosition %= self.states[self.currentState.name].positionCount
+                self.x += self.speed
+                print(self.currentState.name, self.currentState.cropCoordinateX, self.currentStatePosition)
+                if self.flipped:
+                    self.currentState.cropCoordinateX = self.rightBorder - ((self.currentStatePosition * self.width + self.width) % (self.width * (self.currentState.positionCount + 1)))
+                else:
+                    self.currentState.cropCoordinateX = (self.currentState.cropCoordinateX + self.width) % (self.width * self.currentState.positionCount)
             else:
-                self.currentState.cropCoordinateX = (self.currentState.cropCoordinateX + self.width) % (self.width * self.currentState.positionCount)
-            
+                self.currentState = State(self.states["Standing"].returnCopy())
+                self.currentStatePosition = 0
+                self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped
+                
             self.currentState.ticks[self.currentStatePosition] = self.states[self.currentState.name].ticks[self.currentStatePosition]
-            self.currentStatePosition = (self.currentStatePosition + 1) % self.states[self.currentState.name].positionCount
-        
+            
         self.blitx = self.currentState.cropCoordinateX
         self.blity = self.currentState.cropCoordinateY
         
@@ -46,15 +56,27 @@ class Model(Object.Object):
         self.flipped = True   
     
     def stopRunning(self):
-        if self.currentState.name == "Running":
+        if self.currentState.name == "Running" and not self.flipped:
             self.currentState = State(self.states["Standing"].returnCopy())
-            self.currentState.cropCoordinateX = 0
+            self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped
             self.currentStatePosition = 0
             self.speed = 0
             
     def stopRunningFlip(self):
         if self.currentState.name == "Running" and self.flipped:
             self.currentState = State(self.states["Standing"].returnCopy())
-            self.currentState.cropCoordinateX = self.rightBorder - self.width
+            self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped
             self.currentStatePosition = 0
             self.speed = 0    
+            
+    def lightHit(self):
+        self.speed = 0
+        self.currentState = State(self.states["LightHit"].returnCopy())
+        self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped  
+        self.currentStatePosition = 0
+        
+    def lightKick(self):
+        self.speed = 0
+        self.currentState = State(self.states["LightKick"].returnCopy())
+        self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped  
+        self.currentStatePosition = 0    

@@ -5,7 +5,7 @@ import Locations
 
 pygame.init()
 
-size = width, height = 900, 600
+size = width, height = 600, 600
 screen = pygame.display.set_mode(size)
 core = Core.Core(Models.StickDummy, Locations.Basic_Location)
 
