@@ -2,12 +2,10 @@ import sys, pygame
 import Button
 
 def quit():
-    print('Astolfo')
     pygame.quit()
     sys.exit()  
     
 def play():
-    print('GAY')
     import main
     pygame.quit()
     

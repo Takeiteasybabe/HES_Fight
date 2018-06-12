@@ -11,9 +11,11 @@ class Core:
         for key in self.items.keys():
             self.items[key].visible = True
         
-        self.keyBindingsDown = {275 : model1.startRunning}
+        self.keyBindingsDown = {275 : model1.startRunning,
+                                276 : model1.startRunningFlip}
         
-        self.keyBindingsUp = {275 : model1.stopRunning}
+        self.keyBindingsUp = {275 : model1.stopRunning,
+                              276 : model1.stopRunningFlip}
         
     def update(self):
         for key in self.items.keys():

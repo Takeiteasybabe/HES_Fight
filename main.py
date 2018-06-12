@@ -14,11 +14,12 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            #import buttin_test
             sys.exit()
        
         if event.type == pygame.KEYDOWN:
             if event.key in core.keyBindingsDown.keys():
-                core.keyBindingsDown[event.key](False)
+                core.keyBindingsDown[event.key]()
                 
         if event.type == pygame.KEYUP:
             if event.key in core.keyBindingsUp.keys():
