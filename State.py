@@ -1,10 +1,10 @@
 class State:
-    def __init__(self, name, posCnt, ticks, cropCorX, cropCorY):
-        self.name = name
-        self.positionCount = posCnt
-        self.ticks = [i for i in ticks]
-        self.cropCoordinateX = cropCorX
-        self.cropCoordinateY = cropCorY
+    def __init__(self, args):
+        self.name = args[0]
+        self.positionCount = args[1]
+        self.ticks = [i for i in args[2]]
+        self.cropCoordinateX = args[3]
+        self.cropCoordinateY = args[4]     
         
-    def return_copy(self):
-        return [self.name, self.positionCount, self.ticks, self.cropCoordinates]
+    def returnCopy(self):
+        return (self.name, self.positionCount, self.ticks, self.cropCoordinateX, self.cropCoordinateY)

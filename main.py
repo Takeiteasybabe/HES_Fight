@@ -15,10 +15,18 @@ while 1:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        
+       
+        if event.type == pygame.KEYDOWN:
+            if event.key in core.keyBindingsDown.keys():
+                core.keyBindingsDown[event.key](False)
+                
+        if event.type == pygame.KEYUP:
+            if event.key in core.keyBindingsUp.keys():
+                core.keyBindingsUp[event.key]()          
+                
     cells = core.update()
     screen.blit(core.location.picture, core.location.picture.get_rect())
-    for i in core.items:
+    for i in core.items.values():
         if i.visible:
             placeRect = (i.x, i.y, i.width, i.height)
             cropRect = (i.blitx, i.blity, i.width, i.height)
