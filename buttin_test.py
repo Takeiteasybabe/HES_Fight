@@ -4,7 +4,12 @@ import Button
 def quit():
     print('Astolfo')
     pygame.quit()
-    sys.exit()    
+    sys.exit()  
+    
+def play():
+    print('GAY')
+    import main
+    pygame.quit()
     
 pygame.init()
     
@@ -14,6 +19,10 @@ testquit = Button.button()
 testquit.setPicture("quit_button.png")
 testquit.setCords(0, 0, 250, 70)
 testquit.setEvent(quit)
+testplay = Button.button()
+testplay.setPicture("play_button.png")
+testplay.setCords(0, 70, 250, 70)
+testplay.setEvent(play)
 
 
 while 1:
@@ -24,7 +33,10 @@ while 1:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if testquit.in_button(event.pos):
                 testquit.bEvent()
+            if testplay.in_button(event.pos):
+                testplay.bEvent()            
 
+    screen.blit(testplay.setPicture("play_button.png"), pygame.Rect(0, 70, 250, 70))
     screen.blit(testquit.setPicture("quit_button.png"), pygame.Rect(0, 0, 250, 70))
         
     pygame.time.wait(70)
