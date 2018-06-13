@@ -75,10 +75,29 @@ class Model(Object.Object):
             self.currentState = State(self.states["LightHit"].returnCopy())
             self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped  
             self.currentStatePosition = 0
+            gamestats = open("last game.txt", 'r')
+            hits, kicks = map(int, gamestats.read().split())
+            gamestats.close()
+            open("last game.txt", 'w').close()
+            hits += 1
+            hits, kicks = str(hits), str(kicks)
+            gamestats = open("last game.txt", 'w')
+            gamestats.write(" ".join([hits, kicks]))
+            gamestats.close()
+            
         
     def lightKick(self):
         if self.currentState.name in self.cyclingStates:
             self.speed = 0
             self.currentState = State(self.states["LightKick"].returnCopy())
             self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped  
-            self.currentStatePosition = 0    
+            self.currentStatePosition = 0
+            gamestats = open("last game.txt", 'r')
+            hits, kicks = map(int, gamestats.read().split())
+            gamestats.close()
+            open("last game.txt", 'w').close()
+            kicks += 1
+            hits, kicks = str(hits), str(kicks)
+            gamestats = open("last game.txt", 'w')
+            gamestats.write(" ".join([hits, kicks]))
+            gamestats.close()
