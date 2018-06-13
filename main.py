@@ -7,7 +7,7 @@ pygame.init()
 
 size = width, height = 600, 600
 screen = pygame.display.set_mode(size)
-core = Core.Core(Models.StickDummy, Locations.Basic_Location)
+core = Core.Core(Models.StickDummy, Models.BlueStickDummy, Locations.Basic_Location)
 
 
 while 1:
