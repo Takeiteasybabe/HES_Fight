@@ -38,7 +38,7 @@ while 1:
             if event.key in core.keyBindingsUp.keys():
                 core.keyBindingsUp[event.key]()          
                 
-    cells = core.update()
+    core.update()
     screen.blit(core.location.picture, core.location.picture.get_rect())
     for i in core.items.values():
         if i.visible:

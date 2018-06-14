@@ -5,21 +5,21 @@ class Model(Object.Object):
     def __init__(self, imagebox, name, x=0, y=0, isvisible = False):
         Object.Object.__init__(self, imagebox, 24, 32, name)
         self.rightBorder = self.image.get_rect()[2]
-        print(self.rightBorder)
+        self.health = 100
         self.visible = isvisible
         self.flipped = False
         self.states = dict()
         self.states["Standing"] = State(["Standing", 2, [5, 5], 0, 0])
         self.states["Running"] = State(["Running", 2, [1, 1], 0, self.height])
-        self.states["LightHit"] = State(["LightHit", 3, [1, 2, 1], 0, self.height * 2])
-        self.states["LightKick"] = State(["LightKick", 3, [2, 2, 1], 0, self.height * 3])
+        self.states["LightHit"] = State(["LightHit", 3, [1, 2, 1], 0, self.height * 2, [1], 5])
+        self.states["LightKick"] = State(["LightKick", 3, [2, 2, 1], 0, self.height * 3, [1], 7])
         self.currentState = State(self.states["Standing"].returnCopy())
         self.cyclingStates = set(["Standing", "Running"])
+        self.attackingStates = set(["LightHit", "LightKick"])
         self.currentStatePosition = 0
         self.speed = 0
         
-    def update(self):
-        #print(self.currentState.name, self.currentStatePosition)
+    def update(self):       
         if self.currentState.ticks[self.currentStatePosition] > 0:
             self.currentState.ticks[self.currentStatePosition] -= 1
         else:
@@ -37,7 +37,7 @@ class Model(Object.Object):
                 self.currentStatePosition = 0
                 self.currentState.cropCoordinateX = (self.rightBorder - self.width) * self.flipped
                 
-            self.currentState.ticks[self.currentStatePosition] = self.states[self.currentState.name].ticks[self.currentStatePosition]
+            self.currentState.ticks[self.currentStatePosition] = self.states[self.currentState.name].ticks[self.currentStatePosition] - 1
             
         self.blitx = self.currentState.cropCoordinateX
         self.blity = self.currentState.cropCoordinateY

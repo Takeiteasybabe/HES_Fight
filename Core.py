@@ -20,7 +20,9 @@ class Core:
                                 46 : model1.lightKick,
                                 
                                 97 : model2.startRunningFlip,
-                                100 : model2.startRunning}
+                                100 : model2.startRunning,
+                                103 : model2.lightHit,
+                                104 : model2.lightKick}
         
         self.keyBindingsUp = {275 : model1.stopRunning,
                               276 : model1.stopRunningFlip,
@@ -31,4 +33,11 @@ class Core:
     def update(self):
         for key in self.items.keys():
             self.items[key].update()
+            if self.items[key].currentState.name in self.items[key].attackingStates:
+                if self.items[key].currentStatePosition in self.items[key].currentState.attackPositions:
+                    print("I'm attacking")
+                    pass
+                
+    def areIntersected(self):
+        pass
             
