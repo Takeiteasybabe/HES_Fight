@@ -62,11 +62,11 @@ testquit.setPicture("quit_button.png")
 testquit.setCords(0, 0, 250, 70)
 testquit.setEvent(quit)
 testplay = Button.button()
-testplay.setPicture("play_button.png")
+testplay.setPicture("Pictures/play_button.png")
 testplay.setCords(0, 70, 250, 70)
 testplay.setEvent(play)
 teststats = Button.button()
-teststats.setPicture("stats_button.png")
+teststats.setPicture("Pictures/stats_button.png")
 teststats.setCords(0, 140, 250, 70)
 teststats.setEvent(stats)
 
@@ -84,9 +84,9 @@ while 1:
             if teststats.in_button(event.pos):
                 teststats.bEvent()         
 
-    screen.blit(testplay.setPicture("play_button.png"), pygame.Rect(0, 70, 250, 70))
-    screen.blit(testquit.setPicture("quit_button.png"), pygame.Rect(0, 0, 250, 70))
-    screen.blit(teststats.setPicture("stats_button.png"), pygame.Rect(0, 140, 250, 70))
+    screen.blit(testplay.setPicture("Pictures/play_button.png"), pygame.Rect(0, 70, 250, 70))
+    screen.blit(testquit.setPicture("Pictures/quit_button.png"), pygame.Rect(0, 0, 250, 70))
+    screen.blit(teststats.setPicture("Pictures/stats_button.png"), pygame.Rect(0, 140, 250, 70))
         
     pygame.time.wait(70)
     pygame.display.flip()

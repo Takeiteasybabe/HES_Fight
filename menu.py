@@ -8,24 +8,33 @@ def erase():
     open("total stats.txt", 'w').close()
     open("last game.txt", 'w').close()
     open("clicks_stats.txt", 'w').close()
+    a = open("total stats.txt", 'w')
+    a.write('0 0')
+    a.close()
+    a = open("last game.txt", 'w')
+    a.write('0 0')
+    a.close()
+    a = open("clicks_stats.txt", 'w')
+    a.write('0 0 0')
+    a.close()    
     
 def goback():
     menu()
     #pygame.quit() 
     
 def readstats():
-    #totalstats = open("total stats.txt", 'r')
-    #hits, kicks = map(int, totalstats.read().split())
-    #totalstats.close()
-    #lastgame = open("last game.txt", 'r')
-    #lghits, lgkicks = map(int, lastgame.read().split())
-    #lastgame.close()
-    #buttonstats = open("clicks_stats.txt", 'r')
-    #qbutton, pbutton, sbutton = map(int, buttonstats.read().split())
-    #buttonstats.close()
-    #print("Total: " + str(hits) + " hits and " + str(kicks) + " kicks")
-    #print("Last game: " + str(lghits) + " hits and " + str(lgkicks) + " kicks")
-    #print("Buttons clicked: QUIT - " + str(qbutton) + " times, PLAY - " + str(pbutton) + " times, STATS - " + str(sbutton) + " times")
+    totalstats = open("total stats.txt", 'r')
+    hits, kicks = map(int, totalstats.read().split())
+    totalstats.close()
+    lastgame = open("last game.txt", 'r')
+    lghits, lgkicks = map(int, lastgame.read().split())
+    lastgame.close()
+    buttonstats = open("clicks_stats.txt", 'r')
+    qbutton, pbutton, sbutton = map(int, buttonstats.read().split())
+    buttonstats.close()
+    print("Total: " + str(hits) + " hits and " + str(kicks) + " kicks")
+    print("Last game: " + str(lghits) + " hits and " + str(lgkicks) + " kicks")
+    print("Buttons clicked: QUIT - " + str(qbutton) + " times, PLAY - " + str(pbutton) + " times, STATS - " + str(sbutton) + " times")
     Stats()
 
 def quit():
@@ -66,8 +75,9 @@ def stats():
     readstats()
 
 def game():
-    size = width, height = 600, 600
+    size = width, height = 1600, 800
     screen = pygame.display.set_mode(size)
+    screen.fill((255,255,255))
     core = Core.Core(Models.StickDummy, Models.BlueStickDummy, Locations.Basic_Location)
     open("last game.txt", 'w').close()
     lastgame = open("last game.txt", 'w')
@@ -103,32 +113,49 @@ def game():
         core.update()
         screen.blit(core.location.picture, core.location.picture.get_rect())
         for i in core.items.values():
-            if i.visible:
-                placeRect = (i.x, i.y, i.width, i.height)
-                cropRect = (i.blitx, i.blity, i.width, i.height)
-                screen.blit(pygame.transform.flip(i.image, i.flipped, False), placeRect, cropRect)
+            if not core.end:
+                if i.visible:
+                    placeRect = (i.x, i.y, i.width, i.height)
+                    cropRect = (i.blitx, i.blity, i.width, i.height)
+                    screen.blit(pygame.transform.flip(i.image, i.flipped, False), placeRect, cropRect)
+            else:
+                pygame.time.wait(3000)
+                totalstats = open("total stats.txt", 'r')
+                hits, kicks = map(int, totalstats.read().split())
+                totalstats.close()
+                open("total stats.txt", 'w').close()
+                lastgame = open("last game.txt", 'r')
+                lghits, lgkicks = map(int, lastgame.read().split())
+                lastgame.close()
+                hits += lghits
+                kicks += lgkicks
+                hits, kicks = str(hits), str(kicks)
+                totalstats = open("total stats.txt", 'w')
+                totalstats.write(" ".join([hits, kicks]))
+                totalstats.close()            
+                menu()              
     
         pygame.time.wait(70)
         pygame.display.flip()
         
 def menu():
-    size = width, height = 250, 210
+    size = width, height = 250, 290
     screen = pygame.display.set_mode(size)
     testquit = Button.button()
-    testquit.setPicture("quit_button.png")
+    testquit.setPicture("Pictures/QUIT.png")
     testquit.setCords(0, 0, 250, 70)
     testquit.setEvent(quit)
     testplay = Button.button()
-    testplay.setPicture("play_button.png")
-    testplay.setCords(0, 70, 250, 70)
+    testplay.setPicture("Pictures/PLAY.png")
+    testplay.setCords(0, 110, 250, 70)
     testplay.setEvent(play)
     teststats = Button.button()
-    teststats.setPicture("stats_button.png")
-    teststats.setCords(0, 140, 250, 70)
+    teststats.setPicture("Pictures/STAT.png")
+    teststats.setCords(0, 220, 250, 70)
     teststats.setEvent(stats)
-    screen.blit(testplay.setPicture("play_button.png"), pygame.Rect(0, 70, 250, 70))
-    screen.blit(testquit.setPicture("quit_button.png"), pygame.Rect(0, 0, 250, 70))
-    screen.blit(teststats.setPicture("stats_button.png"), pygame.Rect(0, 140, 250, 70))
+    screen.blit(testplay.setPicture("Pictures/PLAY.png"), pygame.Rect(0, 110, 250, 70))
+    screen.blit(testquit.setPicture("Pictures/QUIT.png"), pygame.Rect(0, 0, 250, 70))
+    screen.blit(teststats.setPicture("Pictures/STATS.png"), pygame.Rect(0, 220, 250, 70))
     pygame.display.update()
     
     while 1:
@@ -177,20 +204,20 @@ def Stats():
     text3rect.centerx = screen.get_rect().centerx
     text3rect.centery = 60
     clear = Button.button()
-    clear.setPicture("clear_stats.png")
+    clear.setPicture("Pictures/CLEAR.png")
     clear.setCords(175, 100, 250, 70)
     clear.setEvent(erase)
     
     back = Button.button()
-    back.setPicture("menu.png")
+    back.setPicture("Pictures/MENU.png")
     back.setCords(175, 170, 250, 70)
     back.setEvent(goback)
     
     screen.blit(text1, text1rect)
     screen.blit(text2, text2rect)
     screen.blit(text3, text3rect)
-    screen.blit(clear.setPicture("clear_stats.png"), pygame.Rect(175, 100, 250, 70))
-    screen.blit(back.setPicture("menu.png"), pygame.Rect(175, 170, 250, 70))
+    screen.blit(clear.setPicture("Pictures/CLEAR.png"), pygame.Rect(175, 100, 250, 70))
+    screen.blit(back.setPicture("Pictures/MENU.png"), pygame.Rect(175, 170, 250, 70))
     
     pygame.display.update()
     
