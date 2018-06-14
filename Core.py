@@ -40,7 +40,6 @@ class Core:
                 if self.countDown > 0:
                     self.countDown -= 1
                 else:
-                    print("WINNER")
                     self.end = True                
             self.items[key].update()
             if self.items[key].currentState.name in self.items[key].attackingStates:
@@ -50,7 +49,7 @@ class Core:
                         self.items[1 - key].x -= 5
                         if self.items[1 - key].x > 1500:
                             self.items[1 - key] = 1500
-                        if self.items[1 - key] < 100:
+                        if self.items[1 - key].x < 100:
                             self.items = 100
                         print("HP1 :", self.items[0].hp, "   HP2 :", self.items[1].hp)
 

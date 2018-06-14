@@ -118,7 +118,7 @@ def game():
                     placeRect = (i.x, i.y, i.width, i.height)
                     cropRect = (i.blitx, i.blity, i.width, i.height)
                     screen.blit(pygame.transform.flip(i.image, i.flipped, False), placeRect, cropRect)
-            else:
+            else:             
                 pygame.time.wait(3000)
                 totalstats = open("total stats.txt", 'r')
                 hits, kicks = map(int, totalstats.read().split())
