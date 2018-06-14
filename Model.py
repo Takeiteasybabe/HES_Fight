@@ -24,7 +24,6 @@ class Model(Object.Object):
     def update(self):
         if self.hp <= 0:
             self.Die()
-            self.dead = True
         if self.currentState.ticks[self.currentStatePosition] > 0:
             self.currentState.ticks[self.currentStatePosition] -= 1
         else:
@@ -32,7 +31,6 @@ class Model(Object.Object):
             if self.currentState.name in self.cyclingStates or self.currentStatePosition <= self.currentState.positionCount - 1:
                 self.currentStatePosition %= self.states[self.currentState.name].positionCount
                 self.x += self.speed
-                #print(self.currentState.name, self.currentState.cropCoordinateX, self.currentStatePosition)
                 if self.flipped:
                     self.currentState.cropCoordinateX = self.rightBorder - ((self.currentStatePosition * self.width + self.width) % (self.width * (self.currentState.positionCount + 1)))
                 else:
@@ -44,7 +42,6 @@ class Model(Object.Object):
                 
             self.currentState.ticks[self.currentStatePosition] = self.states[self.currentState.name].ticks[self.currentStatePosition] - 1
             
-        print(self.currentState.name)
         self.blitx = self.currentState.cropCoordinateX
         self.blity = self.currentState.cropCoordinateY
 
@@ -116,5 +113,6 @@ class Model(Object.Object):
                 gamestats.close()
     
     def Die(self):
+        self.dead = True
         self.currentState = State(self.states["Dead"].returnCopy())
         self.currentStatePosition = 0

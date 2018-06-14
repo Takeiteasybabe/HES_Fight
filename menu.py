@@ -1,6 +1,6 @@
 import sys, pygame
+from Model import Model
 import Core
-import Models
 import Locations
 import Button
 
@@ -78,7 +78,7 @@ def game():
     size = width, height = 1600, 800
     screen = pygame.display.set_mode(size)
     screen.fill((255,255,255))
-    core = Core.Core(Models.StickDummy, Models.BlueStickDummy, Locations.Basic_Location)
+    core = Core.Core(Model(pygame.image.load("Pictures/Gjlotnok_All.png"), "GJLOTNEK"), Model(pygame.image.load("Pictures/Shirokov_All.png"), "SHIROKOV"), Locations.Basic_Location)
     open("last game.txt", 'w').close()
     lastgame = open("last game.txt", 'w')
     lastgame.write('0 0')
@@ -119,6 +119,9 @@ def game():
                     cropRect = (i.blitx, i.blity, i.width, i.height)
                     screen.blit(pygame.transform.flip(i.image, i.flipped, False), placeRect, cropRect)
             else:             
+                basicfont = pygame.font.SysFont('Arial', 100)
+                text1 = basicfont.render("FOCKING TRASH", True, (0, 0, 0))  
+                screen.blit(text1, (0, 0))
                 pygame.time.wait(3000)
                 totalstats = open("total stats.txt", 'r')
                 hits, kicks = map(int, totalstats.read().split())

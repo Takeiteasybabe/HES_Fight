@@ -1,12 +1,15 @@
 import Location
 import Model
+import pygame
 
 class Core:
     def __init__(self, model1, model2, Location):
+        print("FUCK")
         self.location = Location
         self.items = {0 : model1, 1 : model2}
         self.end = False
-        self.countDown = 100
+        self.winner = None
+        self.countDown = 20
         self.model1 = model1
         self.model2 = model2
         self.model1.hp = 100
@@ -36,7 +39,9 @@ class Core:
         
     def update(self):
         for key in self.items.keys():
+            print("HP1 :", self.items[0].hp, "   HP2 :", self.items[1].hp)
             if self.items[key].dead:
+                self.winner = 1 - key                   
                 if self.countDown > 0:
                     self.countDown -= 1
                 else:
@@ -51,7 +56,6 @@ class Core:
                             self.items[1 - key] = 1500
                         if self.items[1 - key].x < 100:
                             self.items = 100
-                        print("HP1 :", self.items[0].hp, "   HP2 :", self.items[1].hp)
 
     def areIntersected(self, hitting):
         if (0 < (self.model1.x + self.model1.width - self.model2.x - 205) and 200 > (self.model1.x + self.model1.width - self.model2.x - 205) and not self.model1.flipped and hitting == 0):
