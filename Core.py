@@ -46,7 +46,7 @@ class Core:
                 if self.items[key].currentStatePosition in self.items[key].currentState.attackPositions:
                     if self.areIntersected(key):
                         self.items[1 - key].hp -= self.items[key].currentState.damage
-                        self.items[1 - key].x -= 5
+                        self.items[1 - key].x -= 5 * [1 if self.items[key].flipped else -1][0]
                         if self.items[1 - key].x > 1500:
                             self.items[1 - key] = 1500
                         if self.items[1 - key].x < 100:
